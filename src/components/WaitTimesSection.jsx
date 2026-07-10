@@ -5,9 +5,25 @@ import WaitTimesChart from './WaitTimesChart'
 
 function WaitTimesSection({ portId, primaryLaneType, secondaryLaneType }) {
   const [view, setView] = useState('table')
-  const { waitTimes, summary } = useWaitTimes(portId, primaryLaneType, secondaryLaneType)
+  const { waitTimes, summary, loading, error } = useWaitTimes(
+    portId,
+    primaryLaneType,
+    secondaryLaneType,
+  )
 
-  if (!secondaryLaneType || !summary) {
+  if (!secondaryLaneType) {
+    return null
+  }
+
+  if (loading) {
+    return <p>Loading wait times&hellip;</p>
+  }
+
+  if (error) {
+    return <p className="field-error">Couldn't load wait times</p>
+  }
+
+  if (!summary) {
     return null
   }
 
@@ -21,6 +37,7 @@ function WaitTimesSection({ portId, primaryLaneType, secondaryLaneType }) {
       <div className="view-toggle">
         <button
           type="button"
+          aria-pressed={view === 'table'}
           className={view === 'table' ? 'selected' : ''}
           onClick={() => setView('table')}
         >
@@ -28,6 +45,7 @@ function WaitTimesSection({ portId, primaryLaneType, secondaryLaneType }) {
         </button>
         <button
           type="button"
+          aria-pressed={view === 'graph'}
           className={view === 'graph' ? 'selected' : ''}
           onClick={() => setView('graph')}
         >

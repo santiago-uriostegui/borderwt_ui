@@ -13,7 +13,7 @@ function WaitTimesTable({ waitTimes }) {
         {waitTimes.map((entry) => (
           <tr key={entry.update_time}>
             <td>{new Date(entry.update_time).toLocaleString()}</td>
-            <td>{entry.operational_status}</td>
+            <td className="status-cell">{entry.operational_status}</td>
             <td>{entry.delay_minutes}</td>
             <td>{entry.lanes_open}</td>
           </tr>

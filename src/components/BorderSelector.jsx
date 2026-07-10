@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { fetchJson } from '../api'
 import { formatLaneType } from '../utils/formatLaneType'
 
 function BorderSelector({ onSelectionChange }) {
@@ -9,6 +10,8 @@ function BorderSelector({ onSelectionChange }) {
   const [laneTypes, setLaneTypes] = useState([])
   const [loadingPorts, setLoadingPorts] = useState(false)
   const [loadingLaneTypes, setLoadingLaneTypes] = useState(false)
+  const [portsError, setPortsError] = useState(null)
+  const [laneTypesError, setLaneTypesError] = useState(null)
 
   useEffect(() => {
     if (!border) {
@@ -16,12 +19,22 @@ function BorderSelector({ onSelectionChange }) {
       return
     }
 
+    const controller = new AbortController()
     setLoadingPorts(true)
-    fetch(`http://127.0.0.1:8000/border-ports/${border}/port-names`)
-      .then((res) => res.json())
-      .then((data) => setPorts(data))
-      .catch(() => setPorts([]))
-      .finally(() => setLoadingPorts(false))
+    setPortsError(null)
+    fetchJson(`/border-ports/${border}/port-names`, controller.signal)
+      .then((data) => {
+        setPorts(data)
+        setLoadingPorts(false)
+      })
+      .catch((err) => {
+        if (controller.signal.aborted) return
+        setPorts([])
+        setPortsError(err)
+        setLoadingPorts(false)
+      })
+
+    return () => controller.abort()
   }, [border])
 
   useEffect(() => {
@@ -30,12 +43,22 @@ function BorderSelector({ onSelectionChange }) {
       return
     }
 
+    const controller = new AbortController()
     setLoadingLaneTypes(true)
-    fetch(`http://127.0.0.1:8000/border-ports/${crossing}/primary-lane-types`)
-      .then((res) => res.json())
-      .then((data) => setLaneTypes(data))
-      .catch(() => setLaneTypes([]))
-      .finally(() => setLoadingLaneTypes(false))
+    setLaneTypesError(null)
+    fetchJson(`/border-ports/${crossing}/primary-lane-types`, controller.signal)
+      .then((data) => {
+        setLaneTypes(data)
+        setLoadingLaneTypes(false)
+      })
+      .catch((err) => {
+        if (controller.signal.aborted) return
+        setLaneTypes([])
+        setLaneTypesError(err)
+        setLoadingLaneTypes(false)
+      })
+
+    return () => controller.abort()
   }, [crossing])
 
   useEffect(() => {
@@ -78,6 +101,7 @@ function BorderSelector({ onSelectionChange }) {
             </option>
           ))}
         </select>
+        {portsError && <span className="field-error">Couldn't load ports</span>}
       </label>
 
       <label>
@@ -94,6 +118,7 @@ function BorderSelector({ onSelectionChange }) {
             </option>
           ))}
         </select>
+        {laneTypesError && <span className="field-error">Couldn't load lane types</span>}
       </label>
     </div>
   )

@@ -96,7 +96,15 @@ function WaitTimesChart({ waitTimes }) {
               width={24}
               height={plotHeight}
               fill="transparent"
+              tabIndex={0}
+              role="img"
+              aria-label={`${new Date(p.update_time).toLocaleTimeString([], {
+                hour: '2-digit',
+                minute: '2-digit',
+              })}: ${p.delay_minutes} min wait, ${p.lanes_open} lanes open`}
               onMouseEnter={() => setHoverIndex(i)}
+              onFocus={() => setHoverIndex(i)}
+              onBlur={() => setHoverIndex(null)}
             />
           ))}
 
