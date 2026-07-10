@@ -1,0 +1,184 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.border-filters {
+  display: flex;
+  gap: 12px;
+}
+
+.border-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.secondary-lane-types {
+  display: flex;
+  justify-content: flex-start;
+  align-self: flex-start;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.secondary-lane-types button.selected {
+  border-color: var(--accent, #646cff);
+  font-weight: bold;
+}
+
+.wait-times {
+  align-self: stretch;
+}
+
+.wait-times-summary {
+  margin: 16px 0 0;
+  text-transform: capitalize;
+}
+
+.wait-times-detail {
+  margin: 4px 0 8px;
+  font-size: 14px;
+  font-weight: normal;
+  color: #aaa;
+  text-transform: capitalize;
+}
+
+.wait-times-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.wait-times-table th,
+.wait-times-table td {
+  border: 1px solid #444;
+  padding: 6px 12px;
+  text-align: left;
+}
+
+.view-toggle {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.view-toggle button.selected {
+  border-color: var(--accent, #646cff);
+  font-weight: bold;
+}
+
+.wait-times-chart {
+  --series-wait: #4a3aa7;
+  --series-lanes: #008300;
+  position: relative;
+  width: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+  .wait-times-chart {
+    --series-wait: #9085e9;
+  }
+}
+
+.wait-times-chart svg:not(.chart-legend-item svg) {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.chart-legend {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.chart-gridline {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.chart-axis-label {
+  fill: var(--text);
+  font-size: 11px;
+}
+
+.chart-axis-title {
+  fill: var(--text);
+  font-size: 12px;
+}
+
+.chart-line-wait,
+.chart-line-wait line {
+  stroke: var(--series-wait);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chart-line-lanes,
+.chart-line-lanes line {
+  stroke: var(--series-lanes);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chart-dot.chart-line-wait {
+  fill: var(--series-wait);
+  stroke: var(--bg);
+  stroke-width: 2;
+}
+
+.chart-dot.chart-line-lanes {
+  fill: var(--series-lanes);
+  stroke: var(--bg);
+  stroke-width: 2;
+}
+
+.chart-crosshair {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.chart-end-label.chart-line-wait {
+  fill: var(--series-wait);
+  font-size: 12px;
+  stroke: none;
+}
+
+.chart-end-label.chart-line-lanes {
+  fill: var(--series-lanes);
+  font-size: 12px;
+  stroke: none;
+}
+
+.chart-tooltip {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 6px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.chart-tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
